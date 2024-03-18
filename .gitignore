@@ -1,4 +1,15 @@
 node_modules
 Cards
+# This directory is cropped images of the cards available.
 ElixirBars
+# This directory was just a test for knowing if the getting elixir function was working.
 trainingData
+# This directory includes over 200 labeled images for the training
+getImages.js 
+# This JS file was just to get the images for the training Data.
+screenshot.jpg
+# Temporal screenshot of the screen for processing
+images 
+# Directory where the output image goes, to send the path to the server.
+path-to-diff-image.jpg
+# This was a test for comparing two images. Not needed but cool to have.

@@ -64,7 +64,7 @@ export async function PlayCard(card = 1, square) {
 }
 
 
-export default async function getCards(name) {
+export async function getCards(name) {
 	
 	await screenshot({filename: 'screenshot.jpg'})
 	console.log('Took screenshot')
@@ -90,30 +90,13 @@ export default async function getCards(name) {
 	const cardsPath = cardsInfo.path // C:/Users/<User>/AppData/Local/Temp/
 
 	/*
-	const data = fs.readFileSync(path)
-	console.log(path)
-	
-	fs.writeFileSync('elixir.jpg', data)
-	*/
-
 	const data = fs.readFileSync(cardsPath)
 	fs.writeFileSync('cards' + i + '.jpg', data)
-
+	*/
 	const elixir = await calculateFillPercentage(elixirPath)
 	
 
 	return {
-
 		elixir
 	}
-}
-let i = 0
-while (true) {
-
-	
-	console.log(
-		await getCards(i)
-	)
-	i++
-	sleep(500)
 }
