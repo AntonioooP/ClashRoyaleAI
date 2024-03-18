@@ -1,11 +1,8 @@
 import screenshot from 'screenshot-desktop'
 import { crop } from 'easyimage'
 import fs from 'fs'
-import { sleep } from '@nut-tree/nut-js'
-import { exec as execCallback } from 'child_process'
-import { promisify } from 'util'
-
-const exec = promisify(execCallback)
+import net from 'net'
+import { PlayCard, getCards } from './functions.js'
 
 async function takeSS(name) {
     await screenshot({ filename: 'screenshot.jpg' })
@@ -21,10 +18,10 @@ async function takeSS(name) {
     console.log('Resized screenshot')
     const path = imgInfo.path
     const data = fs.readFileSync(path)
-    fs.writeFileSync(name || 'output.jpg', data)
+    fs.writeFileSync('images/output.jpg', data)
+    return './images/output.jpg'
 }
 
-const scriptPath = 'inference.py'
 
 const fieldArray = [
     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ], // 18 spaces of width
@@ -58,39 +55,64 @@ const fieldArray = [
     [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 ]
 
-while (true) {
-    console.log('Running:')
-    const img = await takeSS()
 
-    try {
-        const { stdout } = await exec(`py "${scriptPath}"`)
 
-        let cards = [],
-            confidences = [],
-            coords = []
+const client = new net.Socket()
 
-        const labelRegEx = /Label (\w+): (\d+)%/g,
-            coordsRegEx = /Coords: (\d+) (\d+) (\d+) (\d+)/g
+
+async function runInference() {
+    const imgPath = await takeSS()
+
+    client.write(imgPath)
+}
+
+async function Play(results) {
+    const cards = [], confidences = [], coords = []
+    // Decide what to do:
+    // One idea is to add to the fieldArray a numeric representation of each card that is played, but where in the array to place it?
+    if (results.length) {
+
+        const labelRegEx = /Label (\w+): (\d+)%/g
 
         let labelMatch
-        while ((labelMatch = labelRegEx.exec(stdout)) !== null) {
+        while ((labelMatch = labelRegEx.exec(results.label)) !== null) {
             cards.push(labelMatch[ 1 ])
             confidences.push(parseInt(labelMatch[ 2 ]))
         }
 
-        let coordsMatch
-        while ((coordsMatch = coordsRegEx.exec(stdout)) !== null) {
-            coords.push([ parseInt(coordsMatch[ 1 ]), parseInt(coordsMatch[ 2 ]), parseInt(coordsMatch[ 3 ]), parseInt(coordsMatch[ 4 ]) ])
-        }
+        coords.push(results.coordinates)
 
         console.log("Cards:", cards)
         console.log("Confidences:", confidences)
         console.log("Coordinates:", coords)
+        // Determine what to play
+        
+        await PlayCard(1, 'A5')
 
-
-    } catch (error) {
-        console.error(`exec error: ${error}`)
+        return
     }
+    // Board is empty determine if we should wait or play something.
+    if (await getCards().elixir >= 8) PlayCard(1, 'B2')
 
-    sleep(1000)
 }
+
+client.connect(65432, '127.0.0.1', function () {
+    console.log('Connected')
+    runInference()
+})
+client.on('data', async (data) => {
+    // Parse the received data as JSON
+    let results = JSON.parse(data)
+    console.log(results)
+
+    await runInference()
+    Play(results)
+})
+
+client.on('close',  () => {
+    console.log('Connection closed')
+})
+
+client.on('error', (err) => {
+    console.error(`Connection error: ${err}`)
+})
