@@ -1,0 +1,80 @@
+item {
+  id: 1
+  name: 'blue_prince'
+}
+
+item {
+  id: 2
+  name: 'blue_knight'
+}
+
+item {
+  id: 3
+  name: 'blue_goblin'
+}
+
+item {
+  id: 4
+  name: 'pekka'
+}
+
+item {
+  id: 5
+  name: 'bandit'
+}
+
+item {
+  id: 6
+  name: 'blue_electrowz'
+}
+
+item {
+  id: 7
+  name: 'electrowz'
+}
+
+item {
+  id: 8
+  name: 'firecracker'
+}
+
+item {
+  id: 9
+  name: 'skeleton'
+}
+
+item {
+  id: 10
+  name: 'magicarcher'
+}
+
+item {
+  id: 11
+  name: 'royalghost'
+}
+
+item {
+  id: 12
+  name: 'hogrider'
+}
+
+item {
+  id: 13
+  name: 'valkyrie'
+}
+
+item {
+  id: 14
+  name: 'bat'
+}
+
+item {
+  id: 15
+  name: 'megaknight'
+}
+
+item {
+  id: 16
+  name: 'darkwitch'
+}
+

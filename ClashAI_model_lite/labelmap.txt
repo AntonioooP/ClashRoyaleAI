@@ -1,0 +1,16 @@
+blue_prince
+blue_knight
+blue_goblin
+pekka
+bandit
+blue_electrowz
+electrowz
+firecracker
+skeleton
+magicarcher
+royalghost
+hogrider
+valkyrie
+bat
+megaknight
+darkwitch
