@@ -3,6 +3,8 @@ import { crop } from 'easyimage'
 import fs from 'fs'
 import {mouse, Button, Point, sleep} from '@nut-tree/nut-js'
 import Jimp from 'jimp'
+import pkg from '@u4/opencv4nodejs'
+const { imread, imshow, waitKey, matchTemplate, TM_CCOEFF_NORMED, minMaxLoc, rectangle } = pkg;
 
 
 async function calculateFillPercentage(imagePath) {
@@ -33,6 +35,13 @@ async function calculateFillPercentage(imagePath) {
   return fillPercentage.toFixed(2);
 }
 
+function loadCardTemplates() {
+	const templates = {}
+	// You could argue that my deck is horrible, and it might be, but it helped me on my 7 years of playing.
+	const cardNames = [ 'blue_prince', 'blue_electrowz', 'blue_barrel' /* goblin barrel */, 'blue_log', 'blue_zap', 'blue_horde', 'blue_knight', 'blue_fireball' ]
+	cardNames.forEach(name => templates[name] = imread('./cardTemplates/' + name + '.jpg'))
+	return templates
+}
 
 export async function PlayCard(card = 1, square) {
 	// Cards are in the following x coordinates for my screen:
@@ -89,14 +98,28 @@ export async function getCards(name) {
 	const elixirPath = elixirInfo.path // C:/Users/<User>/AppData/Local/Temp/
 	const cardsPath = cardsInfo.path // C:/Users/<User>/AppData/Local/Temp/
 
+	const cardsImage = imread(cardsPath), templates = loadCardTemplates(), foundCards = []
+
+	Object.keys(templates).forEach(cardName => {
+		const template = templates[ cardName ]
+		const result = matchTemplate(cardsImage, template, TM_CCOEFF_NORMED)
+		const { maxVal } = minMaxLoc(result)
+
+		if (maxVal > 0.8) { // Threshold for a match, might need tuning
+			foundCards.push(cardName)
+		}
+	})
+
 	/*
 	const data = fs.readFileSync(cardsPath)
 	fs.writeFileSync('cards' + i + '.jpg', data)
 	*/
+
 	const elixir = await calculateFillPercentage(elixirPath)
 	
 
 	return {
-		elixir
+		elixir,
+		foundCards
 	}
 }
