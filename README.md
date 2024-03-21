@@ -42,3 +42,9 @@ Beyond the basic gameplay mechanics, the project aspires to incorporate advanced
 
 ## Conclusion
 As this Clash Royale AI project progresses, we remain flexible and open to adjustments, ensuring that every step taken is in the direction of optimizing AI performance and gameplay strategy. We look forward to overcoming the challenges ahead and advancing the capabilities of AI in Clash Royale.
+
+## TODO:
+- Test OpenCV package for template matching
+- Place cards detected on an array 
+- Add evaluation function
+- Add minimax algorithm

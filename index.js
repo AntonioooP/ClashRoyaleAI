@@ -3,6 +3,7 @@ import { crop } from 'easyimage'
 import fs from 'fs'
 import net from 'net'
 import { PlayCard, getCards } from './functions.js'
+import cardsStats from './cardsStats.json' assert { type: 'json' }
 
 async function takeSS(name) {
     await screenshot({ filename: 'screenshot.jpg' })
