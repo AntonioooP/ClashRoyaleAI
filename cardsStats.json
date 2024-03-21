@@ -1,0 +1,57 @@
+[
+    {
+        "name": "blue_knight",
+        "damage": 202,
+        "hitpoints": 1766,
+        "dps": 168,
+        "hitSpeed": 1.2,
+        "speed": "medium"
+    },
+    {
+        "name": "blue_zap",
+        "damage": 192,
+        "crownTowerDamage": 58
+    },
+    {
+        "name": "blue_horde",
+        "damage": 117,
+        "hitpoints": 230,
+        "hitSpeed": 1,
+        "speed": "fast"
+    },
+    {
+		"name": "blue_log",
+		"damage": 290,
+		"crownTowerDamage": 58
+	},
+    {
+		"name": "blue_fireball",
+		"damage": 689,
+		"crownTowerDamage": 207
+	},
+    {
+        "name": "blue_prince",
+        "damage": 392,
+        "dps": 280,
+        "chargeDamage": 784,
+        "hitpoints": 1920,
+        "hitSpeed": 1.4,
+        "speed": "medium"
+    },
+    {
+        "name": "blue_barrel",
+        "damage": 120,
+        "hitpoints": 202,
+        "hitSpeed": 1.1,
+        "speed": "very fast"
+    },
+    {
+        "name": "blue_electrowz",
+        "damage": 220,
+        "spawnDamage": 192,
+        "dps": 122,
+        "hitpoints": 713,
+        "hitSpeed": 1.8,
+        "speed": "fast"
+    }
+]
