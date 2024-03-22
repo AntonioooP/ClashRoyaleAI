@@ -3,7 +3,7 @@ import { crop } from 'easyimage'
 import fs from 'fs'
 import {mouse, Button, Point, sleep} from '@nut-tree/nut-js'
 import Jimp from 'jimp'
-import pkg from '@u4/opencv4nodejs'
+import pkg from '@techstark/opencv-js'
 const { imread, imshow, waitKey, matchTemplate, TM_CCOEFF_NORMED, minMaxLoc, rectangle } = pkg;
 
 

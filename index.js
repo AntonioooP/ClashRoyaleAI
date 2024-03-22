@@ -93,7 +93,10 @@ async function Play(results) {
         return
     }
     // Board is empty determine if we should wait or play something.
-    if (await getCards().elixir >= 8) PlayCard(1, 'B2')
+
+    const get = await getCards()
+    console.log(get)
+    if (get.elixir >= 8) PlayCard(1, 'B2')
 
 }
 
