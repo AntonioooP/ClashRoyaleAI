@@ -2,7 +2,8 @@ import screenshot from 'screenshot-desktop'
 import { crop } from 'easyimage'
 import {mouse, Button, Point, sleep, screen, imageResource} from '@nut-tree/nut-js'
 import Jimp from 'jimp'
-
+import cv from '@u4/opencv4nodejs'
+const { imread, imshow, waitKey, TM_CCOEFF_NORMED, minMaxLoc } = cv;
 
 async function calculateFillPercentage(imagePath) {
   const image = await Jimp.read(imagePath);
@@ -62,17 +63,23 @@ export async function PlayCard(card = 1, square) {
 	await mouse.click(Button.LEFT)
 }
 
+function loadCardTemplates() {
+	const templates = {}
+	const cardNames = [ 'blue_barrel', 'blue_electrowz', 'blue_fireball', 'blue_horde', 'blue_knight', 'blue_log', 'blue_prince', 'blue_zap' ] 
+	cardNames.forEach(name => templates[ name ] = imread(`./cardTemplates/${name}.jpg`))
+	return templates
+}
 
-export async function getCards(name) {
-	
-	await screenshot({filename: 'screenshot.jpg'})
-	console.log('Took screenshot')
+const templates = loadCardTemplates()
+export async function getCards() {
+	await screenshot({filename: 'cardsScreenshot.jpg'})
+	console.log('Took cards screenshot')
 	const elixirInfo = await crop({
 		x: 802,
 		y: 1065,
 		cropHeight: 14,
 		cropWidth: 340,
-		src: 'screenshot.jpg'
+		src: 'cardsScreenshot.jpg'
 	})
 	
 	console.log('Resized elixir ss')
@@ -81,13 +88,28 @@ export async function getCards(name) {
 		y: 1000,
 		cropHeight: 14,
 		cropWidth: 340,
-		src: 'screenshot.jpg'
+		src: 'cardsScreenshot.jpg'
 	})
 	const elixirPath = elixirInfo.path // C:/Users/<User>/AppData/Local/Temp/
 	const cardsPath = cardsInfo.path
+	const cardsImage = imread(cardsPath)
+	const foundCards = []
+
+
+	Object.keys(templates).forEach(cardName => {
+		const template = templates[ cardName ];
+		const result = cardsImage.matchTemplate(template, TM_CCOEFF_NORMED)
+
+		const { maxVal, maxLoc } = minMaxLoc(result)
+
+		if (maxVal > 0.8) { // Threshold for a match, might need tuning
+			// If a card is found, draw a rectangle around it (optional, for visualization)
+			cardsImage.drawRectangle(maxLoc, new cv.Point(maxLoc.x + template.cols, maxLoc.y + template.rows), new cv.Vec(255, 0, 0), 2)
+			foundCards.push(cardName)
+		}
+	})
 
 	const elixir = await calculateFillPercentage(elixirPath)
-	
 	return {
 		elixir,
 		foundCards

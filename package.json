@@ -12,9 +12,10 @@
 	"type": "module",
 	"dependencies": {
 		"@nut-tree/nut-js": "^3.1.2",
-		"@nut-tree/template-matcher": "^2.0.1",
+		"@u4/opencv4nodejs": "^6.5.3",
 		"easyimage": "^3.1.1",
 		"jimp": "^0.22.12",
+		"opencv4nodejs": "^5.6.0",
 		"screenshot-desktop": "^1.15.0",
 		"sharp": "^0.33.2",
 		"tesseract.js": "^5.0.5"
