@@ -80,7 +80,7 @@ async function Play(results) {
     // Board is empty determine if we should wait or play something.
     
   
-    /*  if (elixir >= 5) {
+    if (elixir >= 5) {
         // More aggressive or strategic play
         if (opponentPlayedAThreat(cards)) {
             // Respond to threat if necessary
@@ -106,7 +106,7 @@ async function Play(results) {
             if (defenseCard) return PlayCard(cardInt, defenseCard.position)
         } else console.log('waiting for elixir')
     } else console.log('waiting for elixir')
-*/
+
 }
 
 function opponentPlayedAThreat(cards) { 
