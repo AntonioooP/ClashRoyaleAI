@@ -8,6 +8,7 @@ trainingData
 getImages.js 
 # This JS file was just to get the images for the training Data.
 screenshot.jpg
+cardsScreenshot.jpg
 # Temporal screenshot of the screen for processing
 images 
 # Directory where the output image goes, to send the path to the server.
